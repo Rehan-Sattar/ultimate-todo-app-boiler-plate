@@ -19,21 +19,9 @@ function insertTodoToDatabase(todoState) {
             .then(data => {
                 if (data) {
                     dispatch({
-                        type: Actions.addTodoSuccess
+                        type: Actions.addTodoSuccess,
+                        payload: data
                     })
-                    fetch(`${API_END_POINT}/todo/api/v1.0/tasks`)
-                        .then(res => res.json())
-                        .then(data => {
-                            swal('Task Added!', 'Your task has been Added.', 'success');
-                            dispatch({
-                                type: Actions.readAllTodoSuccess,
-                                payload: data
-                            })
-                        })
-                        .catch(err => dispatch({
-                            type: Actions.addTodoError,
-                            err
-                        }))
                 }
             })
             .catch(err => dispatch({
@@ -54,23 +42,10 @@ function deleterTodoFromDatabase(todoId) {
         })
             .then(res => res.json())
             .then(data => {
-                // if (data) {
-                fetch(`${API_END_POINT}/todo/api/v1.0/tasks`)
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data)
-                        swal('Task Deleted!', 'Your task has been deleted.', 'success');
-
-                        dispatch({
-                            type: Actions.readAllTodoSuccess,
-                            payload: data
-                        })
-                    })
-                    .catch(err => dispatch({
-                        type: Actions.deleteTodoError,
-                        err
-                    }))
-                // }
+                dispatch({
+                    type: Actions.deleteTodoSuccess,
+                    payload: data
+                })
             })
             .catch(err => dispatch({
                 type: Actions.deleteTodoError,
@@ -99,20 +74,11 @@ function updateTodoInDatabase({ updateDescription,
             .then(res => res.json())
             .then(data => {
                 if (data.status) {
-                    fetch(`${API_END_POINT}/todo/api/v1.0/tasks`)
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log(data)
-                            swal('Wohaamiii!!', 'Your task has been updated', 'success');
-                            dispatch({
-                                type: Actions.readAllTodoSuccess,
-                                payload: data
-                            })
-                        })
-                        .catch(err => dispatch({
-                            type: Actions.updateTodoError,
-                            err
-                        }))
+                    swal('Wohaamiii!!', 'Your task has been updated', 'success');
+                    dispatch({
+                        type: Actions.updateTodoSuccess,
+                        payload: data
+                    })
                 }
             })
             .catch(err => dispatch({
@@ -141,10 +107,21 @@ function getAllTodosFromDatabase() {
 
 function taskDoneAttempt(todo, status) {
     return dispatch => {
-        // fetch(``)
-        //     .then()
-        //     .then()
-        //     .catch()
+        fetch(``)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status) {
+                    swal('Wohaamiii!!', 'Your task has been updated', 'success');
+                    dispatch({
+                        type: Actions.updateTodoSuccess,
+                        payload: data
+                    })
+                }
+            })
+            .catch(err => dispatch({
+                type: Actions.readAllTodoError,
+                err
+            }))
     };
 };
 
